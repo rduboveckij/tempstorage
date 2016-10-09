@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "temp.file.grid.fs.database-host",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "temp.file.grid.fs.database-name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "temp.file.grid.fs.cleaner-start-delay",
+      "type": "java.lang.Long"
+    },
+    {
+      "name": "temp.file.grid.fs.cleaner-repeat-interval",
+      "type": "java.lang.Long"
+    },
+    {
+      "name": "temp.file.grid.fs.cleaner-time-to-live",
+      "type": "java.lang.Long"
+    }
+  ]
+}

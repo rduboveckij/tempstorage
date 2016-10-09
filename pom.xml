@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.rdu.temp.storage</groupId>
+
+    <artifactId>parent</artifactId>
+    <version>${application.version}</version>
+
+    <packaging>pom</packaging>
+    <name>Parent TempStorage Project</name>
+
+    <parent>
+        <groupId>io.spring.platform</groupId>
+        <artifactId>platform-bom</artifactId>
+        <version>Athens-RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <licenses>
+        <license>
+            <name>Unlicense</name>
+            <url>https://github.com/rduboveckij/tempstorage/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/rduboveckij/tempstorage</connection>
+        <url>https://github.com/rduboveckij/tempstorage</url>
+    </scm>
+
+    <developers>
+
+        <developer>
+            <id>rdu</id>
+            <name>Ruslan Dubovetskyi</name>
+            <email>andrus.god@gmail.com</email>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+        </developer>
+
+    </developers>
+
+    <properties>
+
+        <java.version>1.8</java.version>
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+        <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
+        <lombok.version>1.16.10</lombok.version>
+        <application.version>1.0.0-SNAPSHOT</application.version>
+
+    </properties>
+
+
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>Athens-RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rdu.temp.storage</groupId>
+                <artifactId>api</artifactId>
+                <version>${application.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rdu.temp.storage</groupId>
+                <artifactId>service-gridfs</artifactId>
+                <version>${application.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+
+        <module>service-gridfs</module>
+        <module>rest</module>
+        <module>api</module>
+
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
