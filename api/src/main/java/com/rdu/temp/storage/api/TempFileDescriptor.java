@@ -3,6 +3,7 @@ package com.rdu.temp.storage.api;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Collection;
 import java.util.Date;
@@ -13,12 +14,13 @@ import java.util.Date;
  */
 @Data
 @Builder
-public class TempFileDescriptor {
-    private String id;
+public class TempFileDescriptor extends ResourceSupport {
+    private String fileId;
     private String name;
     private String contentType;
+    private String description;
     private long size;
-    private Collection<String> comments;
+    private Collection<TempFileComment> comments;
     private Date uploaded;
 
     @Tolerate

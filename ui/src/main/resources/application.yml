@@ -1,0 +1,5 @@
+zuul:
+  routes:
+    files:
+      path: /api/**
+      url: http://localhost:8081

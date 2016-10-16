@@ -1,5 +1,6 @@
 package com.rdu.temp.storage.service.gridfs;
 
+import com.rdu.temp.storage.api.TempFileComment;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 @Data
 @Builder
 public class TempFileMetadata {
-    private String userId;
-    private Collection<String> comments;
+    private String description;
+    private Collection<TempFileComment> comments;
     private Date expiredAt;
 }

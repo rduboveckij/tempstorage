@@ -2,6 +2,8 @@ package com.rdu.temp.storage.api;
 
 import org.springframework.core.io.Resource;
 
+import java.util.Collection;
+
 
 /**
  * @author rdu
@@ -12,7 +14,11 @@ public interface TempFileService {
 
     TempFileDescriptor findById(String fileId);
 
+    Collection<TempFileDescriptor> findAll();
+
     TempFileDescriptor upload(TempFileUpload file);
 
     Resource download(String fileId);
+
+    TempFileDescriptor update(TempFileDescriptor file);
 }

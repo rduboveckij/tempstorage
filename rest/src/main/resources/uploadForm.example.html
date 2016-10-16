@@ -2,9 +2,10 @@
 <body>
 
 <div>
-    <form method="POST" enctype="multipart/form-data" action="http://localhost:8080">
+    <form method="POST" enctype="multipart/form-data" action="http://localhost:8081/api/files">
         <table>
             <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+            <tr><td>File to upload:</td><td><input type="text" name="description" /></td></tr>
             <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
         </table>
     </form>

@@ -1,5 +1,6 @@
 package com.rdu.temp.storage.service.gridfs;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  * @author rdu
@@ -47,6 +50,14 @@ public class GridFsTempFileService implements TempFileService {
         return convert(findFile(fileId));
     }
 
+    @Override
+    public Collection<TempFileDescriptor> findAll() {
+        return gridFsOperations.find(new Query())
+                .parallelStream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     private GridFSDBFile findFile(String fileId) {
         GridFSDBFile file = gridFsOperations.findOne(
                 Query.query(Criteria.where(WHERE_ID).is(fileId))
@@ -67,10 +78,11 @@ public class GridFsTempFileService implements TempFileService {
     private TempFileDescriptor convert(GridFSFile file) {
         TempFileMetadata metaData = convert(file.getMetaData());
         return TempFileDescriptor.builder()
-                .id(String.valueOf(file.getId()))
+                .fileId(String.valueOf(file.getId()))
                 .name(file.getFilename())
                 .contentType(file.getContentType())
                 .uploaded(file.getUploadDate())
+                .description(metaData.getDescription())
                 .size(file.getLength())
                 .comments(metaData.getComments())
                 .build();
@@ -80,9 +92,15 @@ public class GridFsTempFileService implements TempFileService {
         return mappingMongoConverter.read(TempFileMetadata.class, metaData);
     }
 
+    private DBObject convert(TempFileMetadata metaData) {
+        BasicDBObject dbObject = new BasicDBObject();
+        mappingMongoConverter.write(metaData, dbObject);
+        return dbObject;
+    }
+
     private GridFSFile uploadSafe(TempFileUpload file) {
         TempFileMetadata metadata = TempFileMetadata.builder()
-                .userId("")
+                .description(file.getDescription())
                 .comments(Collections.emptyList())
                 .expiredAt(createExpiredAt())
                 .build();
@@ -101,5 +119,18 @@ public class GridFsTempFileService implements TempFileService {
     @Override
     public Resource download(String fileId) {
         return new GridFsResource(findFile(fileId));
+    }
+
+    @Override
+    public TempFileDescriptor update(TempFileDescriptor file) {
+        GridFSDBFile oldFile = findFile(file.getFileId());
+
+        TempFileMetadata metadata = convert(oldFile.getMetaData());
+        metadata.setComments(file.getComments());
+        metadata.setDescription(file.getDescription());
+
+        oldFile.setMetaData(convert(metadata));
+        oldFile.save();
+        return file;
     }
 }

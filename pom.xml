@@ -13,10 +13,9 @@
     <name>Parent TempStorage Project</name>
 
     <parent>
-        <groupId>io.spring.platform</groupId>
-        <artifactId>platform-bom</artifactId>
-        <version>Athens-RELEASE</version>
-        <relativePath/>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.0.RELEASE</version>
     </parent>
 
     <licenses>
@@ -54,15 +53,13 @@
 
     </properties>
 
-
-
     <dependencyManagement>
         <dependencies>
 
             <dependency>
-                <groupId>io.spring.platform</groupId>
-                <artifactId>platform-bom</artifactId>
-                <version>Athens-RELEASE</version>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Camden.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -94,6 +91,7 @@
         <module>service-gridfs</module>
         <module>rest</module>
         <module>api</module>
+        <module>ui</module>
 
     </modules>
 

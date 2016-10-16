@@ -1,0 +1,30 @@
+{
+  "name": "temp-storage",
+  "version": "1.0.0",
+  "author": "Ruslan Dubovetskyi",
+  "main": "app/index.js",
+  "scripts": {
+    "postinstall": "bower prune & bower up",
+    "start": "gulp serve",
+    "clean": "gulp clean",
+    "test": "karma start",
+    "build": "gulp"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "bower": "^1.7.9",
+    "browser-sync": "^2.17.3",
+    "concat": "0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-csso": "^2.0.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-less": "^3.1.0",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-ng-html2js": "^0.2.2",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-uglify": "^2.0.0",
+    "lodash": "^4.16.4",
+    "merge-stream": "^1.0.0"
+  }
+}

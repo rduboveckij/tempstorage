@@ -14,5 +14,6 @@ import java.io.InputStream;
 public class TempFileUpload {
     String name;
     String contentType;
+    String description;
     InputStream stream;
 }

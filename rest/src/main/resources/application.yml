@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+spring:
+  http:
+    multipart:
+      max-file-size: 128KB
+      max-request-size: 128KB
+
+temp:
+  file:
+    grid:
+      fs:
+        database-host: localhost
+        database-name: tempStorageFs
+        # 10 minute = 10 * 60 * 1000
+        cleaner-start-delay: 600000
+        # 1 hour = 60 * 60 * 1000
+        cleaner-repeat-interval: 3600000
+        # 2 days = 2 * 24 * 60 * 60 * 1000
+        cleaner-time-to-live: 172800000

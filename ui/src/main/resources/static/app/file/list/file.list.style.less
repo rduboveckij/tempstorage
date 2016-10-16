@@ -1,0 +1,47 @@
+@bootstrap: "../../../bower_components/bootstrap/less/";
+
+@import "@{bootstrap}variables.less";
+@import "@{bootstrap}mixins.less";
+
+@import "@{bootstrap}alerts.less";
+@import "@{bootstrap}tables.less";
+@import "@{bootstrap}buttons.less";
+@import "@{bootstrap}forms.less";
+
+@import "@{bootstrap}component-animations.less";
+@import "@{bootstrap}dropdowns.less";
+@import "@{bootstrap}button-groups.less";
+@import "@{bootstrap}input-groups.less";
+@import "@{bootstrap}modals.less";
+
+.table-with-order {
+  th {
+    .clickable()
+  }
+}
+
+.table-with-filter {
+  form {
+    .form-group {
+      margin-right: 10px;
+      margin-bottom: 15px;
+      .open-calendar {
+        .clickable()
+      }
+    }
+  }
+  select {
+    option {
+      text-transform: capitalize;
+    }
+  }
+}
+
+.clickable() {
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

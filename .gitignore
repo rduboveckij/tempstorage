@@ -4,3 +4,7 @@
 *.war
 *.ear
 *.iml
+*.log
+node_modules
+bower_components
+dist

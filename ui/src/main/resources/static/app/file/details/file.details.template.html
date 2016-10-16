@@ -1,0 +1,91 @@
+<div>
+    <a ui-sref="temp-storage-file-list"
+       translate="file.list"></a>
+
+    <div class="panel panel-default file-details">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-7"
+                     translate="file.details"
+                     translate-values="::vm.file"></div>
+                <div class="col-md-3 text-right">
+                    <span class="file-details-label" translate="extension"></span> -
+                    <span ng-bind="::vm.file.extension"></span>
+                </div>
+                <div class="col-md-2 text-right">
+                    <a href="{{::vm.file._links.download.href}}"
+                        class="btn btn-success btn-block"
+                        translate="download"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body"
+             ng-bind="::vm.file.description"></div>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" translate="comment"></span>
+                            <input id="inputComment"
+                                   type="text"
+                                   class="form-control"
+                                   maxlength="255"
+                                   ng-model="vm.comment.text"
+                                   placeholder="{{::'fill.comment' | translate}}">
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button"
+                                ng-click="vm.saveComment()"
+                                ng-disabled="!vm.comment.text"
+                                class="btn btn-primary"
+                                translate="save"></button>
+                    </div>
+                </form>
+            </li>
+            <li class="list-group-item"
+                ng-repeat="comment in vm.file.comments | orderBy: 'created' track by comment.created">
+                <div class="row">
+                    <div class="col-md-8" ng-bind="comment.text"></div>
+                    <div class="col-md-4 text-right">
+                        <button type="button"
+                                ng-disabled="vm.comment === comment"
+                                ng-click="vm.comment = comment"
+                                class="btn btn-default"
+                                translate="edit"></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="file-details-label" translate="created"></span> -
+                        <span ng-bind="::comment.created | date: 'shortDate'"></span>
+                    </div>
+                    <div ng-if="::comment.updated" class="col-md-6 text-right">
+                        <span class="file-details-label" translate="updated"></span> -
+                        <span ng-bind="::comment.updated | date: 'shortDate'"></span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="file-details-label" translate="size"></span> -
+                    <span ng-bind="::vm.file.size | sizeReadable"></span>
+                </div>
+                <div class="col-md-4">
+                    <span class="file-details-label" translate="content.type"></span> -
+                    <span ng-bind="::vm.file.contentType"></span>
+                </div>
+                <div class="col-md-4 text-right">
+                    <span class="file-details-label" translate="uploaded.date"></span> -
+                    <span ng-bind="::vm.file.uploaded | date: 'shortDate'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@ import com.rdu.temp.storage.api.TempFileUpload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
@@ -24,9 +26,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.refEq;
+import static org.mockito.Matchers.*;
 
 /**
  * @author rdu
@@ -35,36 +35,60 @@ import static org.mockito.Matchers.refEq;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TempFileControllerTest {
+    private static final TempFileDescriptor TEMP_FILE_DESCRIPTOR = TempFileDescriptor.builder()
+            .name("upload.file.test.txt")
+            .contentType("text/plain")
+            .description("Description 1")
+            .size(10)
+            .fileId(UUID.randomUUID().toString())
+            .uploaded(new Date())
+            .comments(Collections.emptyList())
+            .build();
+
     @Autowired
     private TestRestTemplate restTemplate;
-
     @MockBean
     private TempFileService tempFileService;
+    @LocalServerPort
+    private int port;
+
+    @Test
+    public void shouldFindByIdSuccess() throws Exception {
+        String fileId = TEMP_FILE_DESCRIPTOR.getFileId();
+
+        given(tempFileService.findById(fileId)).willReturn(TEMP_FILE_DESCRIPTOR);
+        ResponseEntity<TempFileDescriptor> response = restTemplate.getForEntity("/files/{fileId}", TempFileDescriptor.class, fileId);
+
+        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(TEMP_FILE_DESCRIPTOR);
+    }
+
+    @Test
+    public void shouldFindByAllSuccess() throws Exception {
+        given(tempFileService.findAll()).willReturn(Collections.singletonList(TEMP_FILE_DESCRIPTOR));
+        ResponseEntity<Collection> response = restTemplate.getForEntity("/files", Collection.class);
+
+        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(response.getBody().size()).isEqualTo(1);
+    }
 
     @Test
     public void shouldUploadSuccess() throws Exception {
-        TempFileDescriptor tempFileDescriptor = TempFileDescriptor.builder()
-                .name("upload.file.test.txt")
-                .contentType("text/plain")
-                .size(10)
-                .id(UUID.randomUUID().toString())
-                .uploaded(new Date())
-                .comments(Collections.emptyList())
-                .build();
-
-        given(tempFileService.upload(any())).willReturn(tempFileDescriptor);
+        given(tempFileService.upload(any())).willReturn(TEMP_FILE_DESCRIPTOR);
 
         ClassPathResource resource = new ClassPathResource("upload.file.test.txt", getClass());
 
         MultiValueMap<String, Object> request = new LinkedMultiValueMap<>();
         request.add("file", resource);
-        ResponseEntity<TempFileDescriptor> response = restTemplate.postForEntity("/", request, TempFileDescriptor.class);
+        request.add("description", "Description 1");
+        ResponseEntity<TempFileDescriptor> response = restTemplate.postForEntity("/files", request, TempFileDescriptor.class);
 
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(tempFileDescriptor);
+        assertThat(response.getBody()).isEqualTo(TEMP_FILE_DESCRIPTOR);
 
         then(tempFileService).should().upload(refEq(TempFileUpload.builder()
                 .name("upload.file.test.txt")
+                .description("Description 1")
                 .contentType("text/plain")
                 .build(), "stream"));
     }
@@ -77,11 +101,30 @@ public class TempFileControllerTest {
 
         given(tempFileService.download(eq(fileId))).willReturn(resource);
 
-        ResponseEntity<String> response = restTemplate.getForEntity("/{fileId}", String.class, fileId);
+        ResponseEntity<String> response = restTemplate.getForEntity("/files/{fileId}/download", String.class, fileId);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
         assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION))
                 .isEqualTo("attachment; filename=\"upload.file.test.txt\"");
         assertThat(response.getBody()).isEqualTo("Temp File");
     }
+
+    @Test
+    public void shouldUpdateFileSuccess() throws Exception {
+        given(tempFileService.update(any())).willReturn(TEMP_FILE_DESCRIPTOR);
+
+        String fileId = TEMP_FILE_DESCRIPTOR.getFileId();
+        TempFileDescriptor request = TempFileDescriptor.builder()
+                .name(TEMP_FILE_DESCRIPTOR.getName())
+                .contentType(TEMP_FILE_DESCRIPTOR.getContentType())
+                .description(TEMP_FILE_DESCRIPTOR.getDescription())
+                .size(TEMP_FILE_DESCRIPTOR.getSize())
+                .uploaded(TEMP_FILE_DESCRIPTOR.getUploaded())
+                .comments(TEMP_FILE_DESCRIPTOR.getComments())
+                .build();
+        restTemplate.put("/files/{fileId}", request, fileId);
+
+        then(tempFileService).should().update(TEMP_FILE_DESCRIPTOR);
+    }
+
 }

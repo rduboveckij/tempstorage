@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-strict-di ng-app="temp.storage">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+
+    <script src="dist/scripts.js"></script>
+    <link rel="stylesheet" href="dist/styles.css">
+
+    <title translate="title"></title>
+</head>
+<body>
+<header class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">TempStorage</a>
+        </div>
+    </div>
+</header>
+
+<main class="container" ui-view></main>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">Ukraine, Kyiv, Ruslan Dubovetskyi, 2016</p>
+    </div>
+</footer>
+</body>
+</html>

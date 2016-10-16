@@ -1,0 +1,52 @@
+@bootstrap: "../bower_components/bootstrap/less/";
+
+@import "@{bootstrap}variables.less";
+@import "@{bootstrap}mixins.less";
+
+@icon-font-path: "../bower_components/bootstrap/fonts/";
+
+// Reset and dependencies
+@import "@{bootstrap}normalize.less";
+@import "@{bootstrap}print.less";
+@import "@{bootstrap}glyphicons.less";
+
+// Core CSS
+@import "@{bootstrap}scaffolding.less";
+@import "@{bootstrap}type.less";
+@import "@{bootstrap}grid.less";
+@import "@{bootstrap}forms.less";
+
+@import "@{bootstrap}navs.less";
+@import "@{bootstrap}navbar.less";
+
+// Utility classes
+@import "@{bootstrap}utilities.less";
+@import "@{bootstrap}responsive-utilities.less";
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.container {
+  .text-muted {
+    margin: 20px 0;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #f5f5f5;
+
+  > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
